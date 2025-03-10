@@ -5,6 +5,15 @@
 #include "CoreMinimal.h"
 #include "PaperCharacter.h"
 #include "GD_2D_prj1Character.generated.h"
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
+{
+	Idle       UMETA(DisplayName = "Idle"),
+	Running    UMETA(DisplayName = "Running"),
+	Jumping    UMETA(DisplayName = "Jumping"),
+	Falling    UMETA(DisplayName = "Falling"),
+	Dead       UMETA(DisplayName = "Dead")
+};
 
 class UTextRenderComponent;
 
@@ -16,6 +25,8 @@ class UTextRenderComponent;
  * The CharacterMovementComponent (inherited from ACharacter) handles movement of the collision capsule
  * The Sprite component (inherited from APaperCharacter) handles the visuals
  */
+
+
 UCLASS(config=Game)
 class AGD_2D_prj1Character : public APaperCharacter
 {
@@ -29,8 +40,10 @@ class AGD_2D_prj1Character : public APaperCharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
+
 	UTextRenderComponent* TextComponent;
 	virtual void Tick(float DeltaSeconds) override;
+
 protected:
 	// The animation to play while running around
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Animations)
@@ -40,11 +53,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
 	class UPaperFlipbook* IdleAnimation;
 
-	/** Called to choose the correct animation to play based on the character's movement state */
-	void UpdateAnimation();
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+    ECharacterState CharacterState;
+
 
 	/** Called for side to side input */
 	void MoveRight(float Value);
+
+	void UpdateAnimation(UPaperFlipbook* animation);
 
 	void UpdateCharacter();
 
@@ -57,6 +73,10 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+	void UpdateState();
+
+	void HandleState();
 
 public:
 	AGD_2D_prj1Character();
