@@ -219,11 +219,11 @@ void AGD_2D_prj1Character::HandleState()
 		UpdateAnimation(RunningAnimation);
 		UpdateCharacter();
 		break;
-	case ECharacterState::Jumping:
+	//case ECharacterState::Jumping:
 		//Play jumping animation
-		UpdateAnimation(JumpingAnimation);
-		UpdateCharacter();
-		break;
+		//UpdateAnimation(JumpingAnimation);
+		//UpdateCharacter();
+		//break;
 	case ECharacterState::Dead:
 		//Play dead animation
 		break;
